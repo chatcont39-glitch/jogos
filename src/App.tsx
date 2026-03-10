@@ -17,7 +17,8 @@ import {
   Star,
   Timer,
   Volume2,
-  VolumeX
+  VolumeX,
+  Home
 } from 'lucide-react';
 
 // --- Types ---
@@ -471,10 +472,10 @@ export default function App() {
                             <button
                               key={t.id}
                               onClick={() => setTheme(t.id)}
-                              className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all text-left ${
+                              className={`flex items-center gap-4 p-4 rounded-2xl border-4 transition-all text-left relative overflow-hidden ${
                                 theme === t.id 
-                                  ? `border-${t.color.split('-')[1]}-400 bg-${t.color.split('-')[1]}-50 shadow-inner` 
-                                  : 'border-[#F0F0F0] hover:border-gray-300 bg-white'
+                                  ? `border-${t.color.split('-')[1]}-400 bg-${t.color.split('-')[1]}-50 shadow-[inset_0_4px_0_rgba(0,0,0,0.05)]` 
+                                  : 'border-[#F0F0F0] hover:border-gray-300 bg-white shadow-[0_4px_0_rgb(240,240,240)] hover:translate-y-[2px] hover:shadow-[0_2px_0_rgb(240,240,240)] active:translate-y-[4px] active:shadow-none'
                               }`}
                               id={`theme-btn-${t.id}`}
                             >
@@ -498,10 +499,10 @@ export default function App() {
                             <button
                               key={opt}
                               onClick={() => setNumPairs(opt)}
-                              className={`py-3 rounded-xl border-2 font-bold transition-all ${
+                              className={`py-3 rounded-2xl border-4 font-black transition-all ${
                                 numPairs === opt
-                                  ? 'border-orange-400 bg-orange-50 text-orange-600'
-                                  : 'border-[#F0F0F0] hover:border-gray-300 bg-white'
+                                  ? 'border-orange-400 bg-orange-50 text-orange-600 shadow-[inset_0_4px_0_rgba(0,0,0,0.05)]'
+                                  : 'border-[#F0F0F0] hover:border-gray-300 bg-white shadow-[0_4px_0_rgb(240,240,240)] hover:translate-y-[2px] hover:shadow-[0_2px_0_rgb(240,240,240)] active:translate-y-[4px] active:shadow-none'
                               }`}
                               id={`pairs-btn-${opt}`}
                             >
@@ -513,9 +514,10 @@ export default function App() {
 
                       <button
                         onClick={initGame}
-                        className="w-full py-5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl font-bold text-xl shadow-lg shadow-orange-200 transition-all active:scale-95"
+                        className="w-full py-5 bg-[#FF6B35] hover:bg-[#FF8C61] text-white rounded-3xl font-black text-xl shadow-[0_8px_0_rgb(204,82,41)] hover:shadow-[0_4px_0_rgb(204,82,41)] hover:translate-y-1 active:shadow-none active:translate-y-2 transition-all flex items-center justify-center gap-3"
                         id="start-game-btn"
                       >
+                        <Gamepad2 className="w-6 h-6" />
                         Começar Jogo!
                       </button>
                     </div>
@@ -551,10 +553,7 @@ export default function App() {
                     </div>
 
                     {/* Grid */}
-                    <div className={`grid gap-3 md:gap-4 mx-auto`} style={{ 
-                      gridTemplateColumns: `repeat(${numPairs <= 6 ? 3 : 4}, minmax(0, 1fr))`,
-                      maxWidth: numPairs <= 6 ? '400px' : '600px'
-                    }}>
+                    <div className="grid grid-cols-4 gap-3 md:gap-4 mx-auto max-w-2xl">
                       {cards.map((card, idx) => (
                         <div
                           key={card.id}
@@ -592,14 +591,14 @@ export default function App() {
                       ))}
                     </div>
 
-                    <div className="flex justify-center pt-4">
+                    <div className="flex justify-center pt-8">
                       <button 
                         onClick={initGame}
-                        className="flex items-center gap-2 px-6 py-3 rounded-full bg-white border-2 border-[#E5E5E5] hover:border-orange-300 transition-colors font-bold text-[#4A4A4A] shadow-sm"
+                        className="group flex items-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-[#4A4A4A] border-4 border-[#F0F0F0] rounded-3xl font-black text-lg shadow-[0_8px_0_rgb(229,229,229)] hover:shadow-[0_4px_0_rgb(229,229,229)] hover:translate-y-1 active:shadow-none active:translate-y-2 transition-all"
                         id="restart-btn"
                       >
-                        <RefreshCw className="w-5 h-5 text-orange-500" />
-                        Reiniciar
+                        <RefreshCw className="w-6 h-6 text-orange-500 group-hover:rotate-180 transition-transform duration-500" />
+                        Reiniciar Jogo
                       </button>
                     </div>
                   </motion.div>
@@ -609,55 +608,97 @@ export default function App() {
                 {gameState === 'finished' && (
                   <motion.div 
                     key="finished"
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center space-y-8"
+                    className="text-center space-y-10 py-4"
                   >
                     <div className="relative inline-block">
                       <motion.div 
-                        animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                        className="w-32 h-32 bg-yellow-400 rounded-[40px] flex items-center justify-center shadow-2xl mx-auto"
+                        animate={{ 
+                          rotate: [0, 5, -5, 0],
+                          scale: [1, 1.05, 1]
+                        }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        className="w-40 h-40 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-[48px] flex items-center justify-center shadow-2xl mx-auto relative overflow-hidden"
                       >
-                        <Trophy className="text-white w-16 h-16" />
+                        <motion.div
+                          animate={{ opacity: [0.3, 0.6, 0.3], x: [-100, 100] }}
+                          transition={{ repeat: Infinity, duration: 2 }}
+                          className="absolute inset-0 bg-white/30 skew-x-12"
+                        />
+                        <Trophy className="text-white w-20 h-20 drop-shadow-lg" />
                       </motion.div>
+                      
+                      {/* Floating Stars */}
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ 
+                            scale: [0, 1, 0.8], 
+                            opacity: [0, 1, 0.8],
+                            y: [-20, -40 - (i * 10)],
+                            x: [0, (i - 1) * 30]
+                          }}
+                          transition={{ delay: 0.2 + (i * 0.1), duration: 1, repeat: Infinity, repeatDelay: 1 }}
+                          className="absolute top-0 left-1/2"
+                        >
+                          <Star className="fill-yellow-400 text-yellow-500 w-8 h-8" />
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      <motion.h2 
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-5xl font-black text-[#2D2D2D] tracking-tight"
+                      >
+                        Parabéns!
+                      </motion.h2>
+                      
                       <motion.div 
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -top-4 -right-4 w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-lg"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="grid grid-cols-2 gap-4 max-w-sm mx-auto"
                       >
-                        <Star className="fill-white w-6 h-6" />
+                        <div className="bg-blue-50 p-4 rounded-3xl border-2 border-blue-100">
+                          <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Tempo</p>
+                          <p className="text-2xl font-black text-blue-600">{formatTime(seconds)}</p>
+                        </div>
+                        <div className="bg-orange-50 p-4 rounded-3xl border-2 border-orange-100">
+                          <p className="text-xs font-bold text-orange-400 uppercase tracking-widest mb-1">Movimentos</p>
+                          <p className="text-2xl font-black text-orange-600">{moves}</p>
+                        </div>
                       </motion.div>
                     </div>
 
-                    <div className="space-y-2">
-                      <h2 className="text-4xl font-black text-[#2D2D2D]">Incrível!</h2>
-                      <div className="flex flex-col gap-1">
-                        <p className="text-lg text-[#666666]">
-                          Tempo: <span className="text-blue-500 font-bold">{formatTime(seconds)}</span>
-                        </p>
-                        <p className="text-lg text-[#666666]">
-                          Movimentos: <span className="text-orange-500 font-bold">{moves}</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3 max-w-xs mx-auto">
+                    <motion.div 
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="flex flex-col gap-4 max-w-xs mx-auto"
+                    >
                       <button
                         onClick={initGame}
-                        className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-200 transition-all active:scale-95"
+                        className="group w-full py-5 bg-[#FF6B35] hover:bg-[#FF8C61] text-white rounded-3xl font-black text-xl shadow-[0_8px_0_rgb(204,82,41)] hover:shadow-[0_4px_0_rgb(204,82,41)] hover:translate-y-1 active:shadow-none active:translate-y-2 transition-all flex items-center justify-center gap-3"
                         id="play-again-btn"
                       >
-                        Jogar Novamente
+                        <RefreshCw className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" />
+                        Jogar de Novo
                       </button>
+                      
                       <button
                         onClick={() => setGameState('menu')}
-                        className="w-full py-4 bg-white hover:bg-gray-50 text-[#4A4A4A] border-2 border-[#E5E5E5] rounded-2xl font-bold text-lg transition-all"
+                        className="w-full py-5 bg-white hover:bg-gray-50 text-[#4A4A4A] border-4 border-[#F0F0F0] rounded-3xl font-black text-xl shadow-[0_8px_0_rgb(229,229,229)] hover:shadow-[0_4px_0_rgb(229,229,229)] hover:translate-y-1 active:shadow-none active:translate-y-2 transition-all flex items-center justify-center gap-3"
                         id="menu-btn"
                       >
-                        Voltar ao Menu
+                        <Home className="w-6 h-6" />
+                        Início
                       </button>
-                    </div>
+                    </motion.div>
                   </motion.div>
                 )}
 
